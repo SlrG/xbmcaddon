@@ -1,0 +1,2 @@
+[B]2012-10-24 Version 1.0 by SlrG[/B]
+. Initial release. See README.txt for information.

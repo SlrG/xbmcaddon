@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.windowsscreensaver"
+       name="Windows Screensaver"
+       version="1.0"
+       provider-name="SlrG">
+  <requires>
+    <import addon="xbmc.python" version="2.0"/>
+  </requires>
+  <extension point="xbmc.ui.screensaver"
+             library="default.py"/>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Starts the Windows screensaver.</summary>
+    <description lang="en">Script to start the system screensaver on Windows systems.</description>
+    <platform>windx wingl</platform>
+  </extension>
+</addon>
