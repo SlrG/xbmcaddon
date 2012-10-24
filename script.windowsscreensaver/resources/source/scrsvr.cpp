@@ -15,6 +15,22 @@ bool scrsvrexists ()
     return false;
 }
 
+bool xbmcvisible()
+{
+  HWND hWnd_xbmc;
+  hWnd_xbmc = FindWindow(NULL,"xbmc");
+  HWND fgwind;
+  fgwind = GetForegroundWindow();
+  if (hWnd_xbmc == fgwind)
+  {
+    if (IsWindowVisible(hWnd_xbmc))
+      return true;
+    else
+      return false;
+  }
+  return false;
+}
+
 void start ()
 {
   DefWindowProc(GetDesktopWindow(), WM_SYSCOMMAND, SC_SCREENSAVE, 0 );
@@ -83,6 +99,13 @@ int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show)
     else
       return 1;
   }
+  else if (strcmp (cmd,"-f") == 0)
+  {
+    if (xbmcvisible())
+      return 0;
+    else
+      return 1;
+  }
   else if (strcmp (cmd,"-s") == 0)
     start();
   else if (strcmp (cmd,"-c") == 0)
@@ -100,6 +123,7 @@ int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show)
   {
     MessageBox(NULL, "Command Line Switches are:\n\n"
                      "-t\tcheck if windows screensaver is set\n"
+                     "-f\tcheck if xbmc is foreground\n"
                      "-s\tstart system screensaver\n"
                      "-c\tcheck for running screensaver\n"
                      "-cs\tcheck and stop\n"
