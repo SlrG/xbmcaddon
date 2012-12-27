@@ -1,2 +1,4 @@
 [B]2012-10-24 Version 1.0 by SlrG[/B]
-. Initial release. See README.txt for information.
+Initial release. See README.txt for information.
+[B]2012-12-27 Version 1.1 by SlrG[/B]
+Rewrite to fix some bugs. Should now work for remote controlled setups.

@@ -5,6 +5,8 @@ Addon = xbmcaddon.Addon('script.windowsscreensaver')
 __scriptname__ = Addon.getAddonInfo('name')
 __path__ = Addon.getAddonInfo('path')
 cmd = os.path.join(__path__,'resources','scrsvr.exe')
+global wake_needed
+wake_needed = False
 
 #------------------------------------------------------------------------------
 
@@ -17,6 +19,7 @@ class Timer(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
+        global wake_needed	 
         #check for running windows screensaver
         while True: 
             xbmc.sleep(self.runTime)
@@ -24,6 +27,7 @@ class Timer(threading.Thread):
             svrcheck.wait()
             if svrcheck.returncode == 1:
                 self.loop = False
+                wake_needed = True
                 print '3 Screensaver: External Screensaver stopped'
                 self.exit_callback()
             if not self.loop:
@@ -54,7 +58,7 @@ class Screensaver(xbmcgui.WindowXMLDialog):
         xbmc.sleep(2000)
         t = Timer(500, True, self.exit)
         t.start()
-             
+
     def exit(self):
         print '5 Screensaver: Exit requested'
         #check if external saver is still running and stop it
@@ -79,11 +83,16 @@ if __name__ == '__main__':
             screensaver_gui.doModal()
             print '6 Screensaver: Python Screensaver Exits'
             del screensaver_gui
-            #force stop of XBMC internal screensaver
-            subprocess.Popen([cmd,'-k'])
+            #Force the XBMC Screensaver to wake up. As long as the PingApp()
+            #function is not merged in a keypress will have to be simulated.
+            if wake_needed:
+                #xbmc.executebuiltin("PingApp()")
+                subprocess.Popen([cmd,'-k'])
         else:
-            print '2-6 Screensaver: XBMC not active, no need to start windows saver. XBMC saver started.'
+            print '2-6 Screensaver: XBMC not active, no need to start windows' \
+                ' saver. XBMC saver started.'
     else:
-        print '2-6 Screensaver: No Windows screensaver is set. XBMC saver started.'
+        print '2-6 Screensaver: No Windows screensaver is set. XBMC saver' \
+            ' started.'
     print '7 Screensaver: Script Ends'
     sys.modules.clear()
